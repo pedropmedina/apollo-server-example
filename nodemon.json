@@ -1,0 +1,7 @@
+{
+	"verbose": "true",
+	"runOnChangeOnly": true,
+	"watch": ["src/*"],
+	"ignore": ["test/*"],
+	"ext": "js,json,graphql"
+}
