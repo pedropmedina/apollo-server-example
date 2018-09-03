@@ -1,7 +1,14 @@
 const { google } = require('googleapis');
 
-const { oAuth2Client } = require('../user/user.resolvers');
 const tokens = require('../../../tokens.json');
+const keys = require('../../keys.json');
+
+// instantiate OAuth2
+const oAuth2Client = new google.auth.OAuth2(
+	keys.web.client_id,
+	keys.web.client_secret,
+	keys.web.redirect_uris[0],
+);
 
 // access api and provide authentication
 const books = google.books({
@@ -22,10 +29,8 @@ const getBooks = async (root, args, ctx, info) => {
 };
 
 module.exports = {
-	resolvers: {
-		Query: {
-			getBooks,
-		},
+	Query: {
+		getBooks,
 	},
 };
 
