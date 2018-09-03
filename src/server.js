@@ -1,53 +1,84 @@
-const { ApolloServer, gql } = require('apollo-server');
+const { GraphQLServer } = require('graphql-yoga');
+const fs = require('fs');
 
-// local data to be fetched by graphql
-const books = [
-	{
-		title: 'Harry Potter and the Chamber of Secrets',
-		author: 'J.K. Rowling',
-	},
-	{
-		title: 'Jurissic Park',
-		author: 'Michael Crichton',
-	},
-];
+// oAuth2 instance from user.resolver
+const { oAuth2Client } = require('./api/user/user.resolvers');
 
-// type definitions
-const typeDefs = gql`
-	type Book {
-		title: String
-		author: String
-	}
+// graphQL configuration from api/index.js
+const graphQLConfig = require('./api');
 
-	type Query {
-		books: [Book]
-	}
-`;
-
-// resolvers
-const resolvers = {
-	Query: {
-		books: () => books,
-	},
+// options for graphql-yoga
+const options = {
+	port: 5000,
+	endpoint: '/graphql',
+	playground: '/playground',
 };
 
-// Avoid graphql-playground invisible cursor issue
-// https://github.com/prisma/graphql-playground/issues/790
-const playground = {
-	settings: {
-		'editor.cursorShape': 'line',
-	},
-};
+// instance of graphql graphql-yoga server
+const server = new GraphQLServer(graphQLConfig);
 
-// The apollo server can be started by passing the typeDefs and the resolvers
-const server = new ApolloServer({ typeDefs, resolvers, playground });
+// Run express middeware to on /auth to extract code and access token
+// This is only going to run upon user's signin
+server.express.use('/auth', async (req, res, next) => {
+	const code = req.query.code;
+	const { tokens } = await oAuth2Client.getToken(code);
+	oAuth2Client.setCredentials(tokens);
 
-server.listen({ port: process.env.PORT || 5000 }).then(({ url }) => {
-	console.log(`🚀  Server ready at ${url}`);
+	// set Authorization on context for access throughout app
+	// server.context = { Authorization: tokens };
+	fs.writeFile('tokens.json', JSON.stringify(tokens), err => {
+		if (err) throw err;
+		console.log('tokens were saved!');
+	});
+
+	next();
 });
 
-// Both the graphql-playground and the graphql request are send
-// to the same '/' endpoint. GET requests from the browser
-// are only going to receive the graphql-playground, whereas,
-// request to graphql are independent and will be directed to '/'
-// Furthermore, Apollo will disable graphql-playground during production
+server.start(options, ({ port }) => {
+	console.log(`🚀 Server is up on port ${port}`);
+});
+
+// References:
+// https://medium.com/@pablo127/google-api-authentication-with-oauth-2-on-the-example-of-gmail-a103c897fd98
+
+// https://github.com/google/google-auth-library-nodejs
+
+// // Google Oauth2 ------------------- Start
+// const getAuthenticatedClient = () => {
+// 	return new Promise((resolve, reject) => {
+// 		const oAuth2Client = new OAuth2Client(
+// 			keys.web.client_id,
+// 			keys.web.client_secret,
+// 			keys.web.redirect_uris[0],
+// 		);
+
+// 		const authorizeUrl = oAuth2Client.generateAuthUrl({
+// 			access_type: 'offline',
+// 			scope: 'https://www.googleapis.com/auth/books',
+// 		});
+
+// 		opn(authorizeUrl);
+
+// 		server.express.use('/auth', async (req, res, next) => {
+// 			const code = req.query.code;
+
+// 			// With the presence of the code we go ahead and obtain the token
+// 			const { tokens } = await oAuth2Client.getToken(code);
+// 			oAuth2Client.setCredentials(tokens);
+// 			resolve(oAuth2Client);
+// 			next();
+// 		});
+// 	});
+// };
+
+// const main = async () => {
+// 	try {
+// 		const oAuth2Client = await getAuthenticatedClient();
+// 		const url = 'https://www.googleapis.com/books/v1/mylibrary/bookshelves';
+// 		const res = await oAuth2Client.request({ url });
+// 		console.log(res.data);
+// 	} catch (error) {
+// 		console.log('error => ', error);
+// 	}
+// };
+// // Google Oauth2 ------------------- End

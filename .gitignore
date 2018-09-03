@@ -6,3 +6,6 @@ yarn-error.log
 
 # Dependencies
 node_modules
+
+# Tokens for local development
+tokens.json

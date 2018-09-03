@@ -1,0 +1,7 @@
+{
+	"projects": {
+		"book": {
+			"schemaPath": "./src/api/book/book.graphql"
+		}
+	}
+}
