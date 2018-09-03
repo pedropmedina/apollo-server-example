@@ -4,7 +4,7 @@ const path = require('path');
 const { google } = require('googleapis');
 const { GraphQLServer } = require('graphql-yoga');
 
-const keys = require('./keys.json');
+const keys = require('../keys.json');
 
 // graphQL configuration from api/index.js
 const graphQLConfig = require('./api');

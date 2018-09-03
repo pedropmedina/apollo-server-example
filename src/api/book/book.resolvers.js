@@ -1,7 +1,7 @@
 const { google } = require('googleapis');
 
 const tokens = require('../../../tokens.json');
-const keys = require('../../keys.json');
+const keys = require('../../../keys.json');
 
 // instantiate OAuth2
 const oAuth2Client = new google.auth.OAuth2(
