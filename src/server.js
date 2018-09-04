@@ -1,10 +1,6 @@
 const { GraphQLServer } = require('graphql-yoga');
-const { OAuth2Client } = require('google-auth-library');
-const fs = require('fs');
-const opn = require('opn');
-const path = require('path');
 
-const keys = require('../keys.json');
+const { oAuth2Client, authenticateClient } = require('./oAuth2Client');
 
 // graphQL configuration from api/index.js
 const graphQLConfig = require('./api');
@@ -19,46 +15,24 @@ const options = {
 // instance of graphql graphql-yoga server
 const server = new GraphQLServer(graphQLConfig);
 
-// ----------------------------------------------------- Start
-const authenticateClient = () => {
-	const oAuth2Client = new OAuth2Client(
-		keys.web.client_id,
-		keys.web.client_secret,
-		keys.web.redirect_uris[0],
-	);
+// express middlewares
+server.express.use('/auth', async (req, res, next) => {
+	// This library will automatically obtain an access_token,
+	// and automatically refresh the access_token if a refresh_token is present.
+	// The refresh_token is only returned on the first authorization
+	const code = req.query.code;
+	const { tokens } = await oAuth2Client.getToken(code);
+	oAuth2Client.setCredentials(tokens);
 
-	const authorizeUrl = oAuth2Client.generateAuthUrl({
-		access_type: 'offline',
-		scope: 'https://www.googleapis.com/auth/books',
+	fs.writeFile('tokens.json', JSON.stringify(tokens), err => {
+		if (err) throw err;
+		console.log('tokens were saved!');
 	});
 
-	opn(authorizeUrl);
+	next();
+});
 
-	server.express.use('/auth', async (req, res, next) => {
-		const code = req.query.code;
-		const { tokens } = await oAuth2Client.getToken(code);
-		oAuth2Client.setCredentials(tokens);
-
-		// for local development
-		fs.writeFile('tokens.json', JSON.stringify(tokens), err => {
-			if (err) throw err;
-			console.log('tokens were saved!');
-		});
-
-		next();
-	});
-};
-// ----------------------------------------------------- End
-
+// start server
 server.start(options, ({ port }) => {
 	console.log(`🚀 Server is up on port ${port}`);
-
-	fs.readFile(path.join(__dirname, '../tokens.json'), 'utf8', (err, data) => {
-		if (err) throw err;
-		if (!data) {
-			authenticateClient();
-		} else {
-			console.log('Tokens already in file.');
-		}
-	});
 });
