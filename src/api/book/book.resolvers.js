@@ -1,13 +1,10 @@
-const { oAuth2Client } = require('../../oAuth2Client');
-const tokens = require('../../../tokens.json');
+const { google } = require('googleapis');
 
-const url =
-	'https://www.googleapis.com/books/v1/mylibrary/bookshelves/0/volumes';
+const books = google.books('v1');
 
 const getBooks = async (root, args, ctx, info) => {
-	oAuth2Client.setCredentials(tokens);
-	const res = await oAuth2Client.request({ url });
-	console.log(res.data.totalItems);
+	const res = await books.mylibrary.bookshelves.list();
+	console.log(res.data.items);
 };
 
 module.exports = {
