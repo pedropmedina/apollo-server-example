@@ -1,7 +1,10 @@
 {
 	"projects": {
-		"book": {
-			"schemaPath": "./src/api/book/book.graphql"
+		"bookshelf": {
+			"schemaPath": "./src/api/bookshelf/bookshelf.graphql"
+		},
+		"volume": {
+			"schemaPath": "./src/api/volume/volume.graphql"
 		}
 	}
 }

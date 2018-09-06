@@ -1,0 +1,11 @@
+type Bookshelf {
+	id: Int
+	selfLink: String
+	title: String
+	volumeCount: Int
+}
+
+type Query {
+	getBookshelves: [Bookshelf]!
+	getBookshelf(shelfId: Int): Bookshelf
+}
