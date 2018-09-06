@@ -3,36 +3,35 @@ const fs = require('fs');
 
 const { oAuth2Client, signupClient, loginClient } = require('./oAuth2Client');
 
-// graphQL configuration from api/index.js
+require('./db')('mongodb://localhost:27017/books');
+
 const graphQLConfig = require('./api');
 
-// options for graphql-yoga
 const options = {
 	port: 5000,
 	endpoint: '/graphql',
 	playground: '/playground',
 };
 
-// instance of graphql graphql-yoga server
 const server = new GraphQLServer(graphQLConfig);
 
-// express middlewares
+module.exports = server;
+
 server.express.get('/signup', async (req, res, next) => {
-	const code = req.query.code;
+	const code = await req.query.code;
 	const { tokens } = await oAuth2Client.getToken(code);
+	next();
 
 	// save tokens locally for development
 	fs.writeFile('tokens.json', JSON.stringify(tokens), err => {
 		if (err) throw err;
 		console.log('tokens were saved!');
 	});
-
-	next();
 });
 
-// start server
 server.start(options, ({ port }) => {
-	console.log(`🚀 Server is up on port ${port}`);
+	console.log(`🚀  Server is up on port ${port}`);
+	// signupClient();
 });
 
 /**

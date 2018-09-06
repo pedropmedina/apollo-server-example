@@ -1,5 +1,6 @@
 const { google } = require('googleapis');
 const opn = require('opn');
+const fs = require('fs');
 
 const keys = require('../keys.json');
 const tokens = require('../tokens.json');
@@ -24,6 +25,7 @@ google.options({
 // authenticate client on signin
 const scopes = [
 	'https://www.googleapis.com/auth/userinfo.profile',
+	'https://www.googleapis.com/auth/userinfo.email',
 	'https://www.googleapis.com/auth/books',
 ];
 
@@ -32,7 +34,7 @@ const signupClient = () => {
 		access_type: 'offline',
 		scope: scopes,
 		redirect_uri: keys.web.redirect_uris[0],
-		// prompt: 'consent',
+		prompt: 'consent',
 	});
 
 	opn(authorizeUrl);
@@ -48,12 +50,31 @@ const loginClient = () => {
 	opn(authorizeUrl);
 };
 
-// check tokesn event
+// update refresh token when available
 oAuth2Client.on('tokens', tokens => {
 	if (tokens.refresh_token) {
 		console.log('-------------------------------------- ');
 		console.log('refresh_token =>>', tokens.refresh_token);
 		console.log('-------------------------------------- ');
+
+		fs.readFile('tokens.json', 'utf8', (error, data) => {
+			if (error) throw error;
+			const parsedTokens = JSON.parse(data);
+
+			const updatedTokens = {
+				...parsedTokens,
+				refresh_token: tokens.refresh_token,
+			};
+
+			fs.writeFile(
+				'tokens.json',
+				JSON.stringify(updatedTokens),
+				(error, data) => {
+					if (error) throw error;
+					console.log('New refresh_token was saved.');
+				},
+			);
+		});
 	} else {
 		console.log('-------------------------------------- ');
 		console.log('access_token =>>', tokens.access_token);
