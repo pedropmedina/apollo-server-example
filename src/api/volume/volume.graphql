@@ -1,3 +1,48 @@
+type Volume {
+	id: String!
+	etag: String!
+	safeLink: String!
+	volumeInfo: VolumeInfo!
+	saleInfo: SaleInfo!
+}
+
+type VolumeInfo {
+	title: String!
+	subtitle: String
+	authors: [String]!
+	publisher: String!
+	publishedDate: String!
+	description: String
+	pageCount: Int
+	categories: [String]
+	averageRating: Float
+	ratingCount: Int
+	maturityRating: String
+	imageLinks: ImageLinks
+}
+
+type ImageLinks {
+	smallThumbnail: String
+	thumbnail: String
+	previewLink: String
+	infoLink: String
+	canonicalVolumeLink: String
+}
+
+type SaleInfo {
+	country: String
+	saleability: String
+	isEbook: String
+	listPrice: Price
+	retailPrice: Price
+	buyLink: String
+}
+
+type Price {
+	amount: Float
+	currencyCode: String
+}
+
 extend type Query {
-	getVolumes(shelfId: Int): String
+	getVolumes(shelfId: Int): [Volume]
 }

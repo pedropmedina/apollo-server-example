@@ -1,8 +1,8 @@
 type Bookshelf {
-	id: Int
-	selfLink: String
-	title: String
-	volumeCount: Int
+	id: Int!
+	selfLink: String!
+	title: String!
+	volumeCount: Int!
 }
 
 type Query {
