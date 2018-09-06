@@ -18,5 +18,8 @@
 	"scripts": {
 		"dev": "nodemon ./src/server.js",
 		"start": "node ./src/server.js"
+	},
+	"devDependencies": {
+		"@playlyfe/gql": "^2.6.0"
 	}
 }

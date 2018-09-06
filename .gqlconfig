@@ -1,0 +1,17 @@
+{
+	schema: {
+		files: 'src/api/**/*.gql'
+	},
+	query: {
+		files: [
+			{
+				match: 'src/api/**/*.gql',
+				parser: 'QueryParser'
+			},
+			{
+				match: { include: 'src/api/**/*.js'},
+				parser: [ 'EmbeddedQueryParser', { startTag: 'gql`', endTag: '`'}]
+			}
+		]
+	}
+}

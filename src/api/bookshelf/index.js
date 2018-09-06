@@ -1,4 +1,4 @@
 module.exports = {
-	typeDefs: require('../../utils/graphqlLoader')('bookshelf/bookshelf.graphql'),
+	typeDefs: require('../../utils/graphqlLoader')('bookshelf/bookshelf.gql'),
 	resolvers: require('./bookshelf.resolvers'),
 };

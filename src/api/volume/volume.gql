@@ -44,5 +44,5 @@ type Price {
 }
 
 extend type Query {
-	getVolumes(shelfId: Int): [Volume]
+	getVolumes(shelfId: Int): [Volume]!
 }
