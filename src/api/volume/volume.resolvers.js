@@ -10,6 +10,12 @@ const getVolumes = async (root, args, ctx, info) => {
 	return res.data.items;
 };
 
+const getVolume = async (root, args, ctx, info) => {
+	const res = await books.volumes.get({ volumeId: args.volumeId });
+	console.log(res.data);
+	return res.data;
+};
+
 const addVolume = async (root, { input }, ctx, info) => {
 	const res = await books.mylibrary.bookshelves.addVolume({
 		shelf: input.shelf,
@@ -38,6 +44,7 @@ const searchVolume = async (root, args, ctx, info) => {
 module.exports = {
 	Query: {
 		getVolumes,
+		getVolume,
 		searchVolume,
 	},
 	Mutation: {

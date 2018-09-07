@@ -17,16 +17,28 @@ type VolumeInfo {
 	categories: [String]!
 	averageRating: Float
 	ratingsCount: Int
+	industryIdentifiers: [IndustryIdentifiers]
 	maturityRating: String!
 	imageLinks: ImageLinks!
 }
 
+# properties small through extraLarge only
+# available when getting volume by id
 type ImageLinks {
 	smallThumbnail: String
 	thumbnail: String
+	small: String
+	medium: String
+	large: String
+	extraLarge: String
 	previewLink: String
 	infoLink: String
 	canonicalVolumeLink: String
+}
+
+type IndustryIdentifiers {
+	type: String
+	identifier: String
 }
 
 type SaleInfo {
@@ -50,6 +62,7 @@ input VolumeInput {
 
 extend type Query {
 	getVolumes(shelfId: Int): [Volume]!
+	getVolume(volumeId: String!): Volume!
 	searchVolume(query: String!): [Volume]!
 }
 

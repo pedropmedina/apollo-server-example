@@ -30,8 +30,3 @@ module.exports = {
 		volumes,
 	},
 };
-
-// bookshelf.list - no parameters required
-// bookshelf.get - requires 'shelf' : shelf number
-// bookshelf.volumes.list - requires 'shelf : shelf number
-// books.volumes.get({ volumeId: id })
