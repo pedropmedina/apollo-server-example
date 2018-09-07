@@ -34,6 +34,7 @@ server.start(options, ({ port }) => {
 	// signupClient();
 });
 
+// -----------------------------------------------------------------
 /**
  * singup with Google
  * 		1. user clicks singup button at '/signup'
@@ -52,6 +53,7 @@ server.start(options, ({ port }) => {
  * 		6. send user to homepage
  */
 
+// ------------------------------------------------------------------
 // Configuration setting for Graphql files
 // 1. Install extendion grapql for visual studios
 // 2. install as a --dev dependency @playlyfe/gql -> https://www.npmjs.com/package/@playlyfe/gql

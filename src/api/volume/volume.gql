@@ -12,13 +12,13 @@ type VolumeInfo {
 	authors: [String]!
 	publisher: String!
 	publishedDate: String!
-	description: String
-	pageCount: Int
-	categories: [String]
-	averageRating: Float
-	ratingCount: Int
-	maturityRating: String
-	imageLinks: ImageLinks
+	description: String!
+	pageCount: Int!
+	categories: [String]!
+	averageRating: Float!
+	ratingCount: Int!
+	maturityRating: String!
+	imageLinks: ImageLinks!
 }
 
 type ImageLinks {
@@ -30,17 +30,17 @@ type ImageLinks {
 }
 
 type SaleInfo {
-	country: String
-	saleability: String
+	country: String!
+	saleability: String!
 	isEbook: String
-	listPrice: Price
-	retailPrice: Price
-	buyLink: String
+	listPrice: Price!
+	retailPrice: Price!
+	buyLink: String!
 }
 
 type Price {
-	amount: Float
-	currencyCode: String
+	amount: Float!
+	currencyCode: String!
 }
 
 extend type Query {
