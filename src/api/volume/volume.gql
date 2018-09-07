@@ -3,7 +3,7 @@ type Volume {
 	etag: String!
 	safeLink: String!
 	volumeInfo: VolumeInfo!
-	saleInfo: SaleInfo!
+	saleInfo: SaleInfo
 }
 
 type VolumeInfo {
@@ -15,8 +15,8 @@ type VolumeInfo {
 	description: String!
 	pageCount: Int!
 	categories: [String]!
-	averageRating: Float!
-	ratingCount: Int!
+	averageRating: Float
+	ratingsCount: Int
 	maturityRating: String!
 	imageLinks: ImageLinks!
 }
@@ -30,19 +30,30 @@ type ImageLinks {
 }
 
 type SaleInfo {
-	country: String!
-	saleability: String!
+	country: String
+	saleability: String
 	isEbook: String
-	listPrice: Price!
-	retailPrice: Price!
-	buyLink: String!
+	listPrice: Price
+	retailPrice: Price
+	buyLink: String
 }
 
 type Price {
-	amount: Float!
-	currencyCode: String!
+	amount: Float
+	currencyCode: String
+}
+
+input VolumeInput {
+	shelf: Int
+	volumeId: String
 }
 
 extend type Query {
 	getVolumes(shelfId: Int): [Volume]!
+	searchVolume(query: String!): [Volume]!
+}
+
+type Mutation {
+	addVolume(input: VolumeInput): String
+	removeVolume(input: VolumeInput): String
 }
