@@ -14,10 +14,20 @@ const getBookshelf = async (root, args, ctx, info) => {
 	console.log(res.data);
 };
 
+const volumes = async (root, args, ctx, info) => {
+	const res = await books.mylibrary.bookshelves.volumes.list({
+		shelf: root.id,
+	});
+	return res.data.items;
+};
+
 module.exports = {
 	Query: {
 		getBookshelves,
 		getBookshelf,
+	},
+	Bookshelf: {
+		volumes,
 	},
 };
 

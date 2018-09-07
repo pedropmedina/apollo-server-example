@@ -3,6 +3,7 @@ type Bookshelf {
 	selfLink: String!
 	title: String!
 	volumeCount: Int!
+	volumes: [Volume]!
 }
 
 type Query {
