@@ -41,11 +41,17 @@ const searchVolume = async (root, args, ctx, info) => {
 	return res.data.items;
 };
 
+const recommendedVolumes = async (root, args, ctx, info) => {
+	const res = await books.volumes.recommended.list();
+	return res.data.items;
+};
+
 module.exports = {
 	Query: {
 		getVolumes,
 		getVolume,
 		searchVolume,
+		recommendedVolumes,
 	},
 	Mutation: {
 		addVolume,

@@ -1,7 +1,7 @@
 type Volume {
 	id: String!
-	etag: String!
-	safeLink: String!
+	etag: String
+	safeLink: String
 	volumeInfo: VolumeInfo!
 	saleInfo: SaleInfo
 }
@@ -64,6 +64,7 @@ extend type Query {
 	getVolumes(shelfId: Int): [Volume]!
 	getVolume(volumeId: String!): Volume!
 	searchVolume(query: String!): [Volume]!
+	recommendedVolumes: [Volume]!
 }
 
 type Mutation {
