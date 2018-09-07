@@ -1,0 +1,10 @@
+union SearchResults = Bookshelf | Volume
+
+input SearchInput {
+	shelf: Int
+	query: String
+}
+
+extend type Query {
+	search(input: SearchInput): [SearchResults]!
+}
