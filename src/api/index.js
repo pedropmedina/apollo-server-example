@@ -4,6 +4,7 @@ const bookshelf = require('./bookshelf');
 const volume = require('./volume');
 const search = require('./search');
 const user = require('./user');
+const group = require('./group');
 
 module.exports = {
 	typeDefs: [
@@ -11,6 +12,7 @@ module.exports = {
 		bookshelf.typeDefs,
 		volume.typeDefs,
 		search.typeDefs,
+		group.typeDefs,
 	].join(' '),
 
 	resolvers: merge(
@@ -19,5 +21,12 @@ module.exports = {
 		bookshelf.resolvers,
 		volume.resolvers,
 		search.resolvers,
+		group.resolvers,
 	),
+
+	context: ({ request }) => ({
+		models: {
+			group: group.model,
+		},
+	}),
 };

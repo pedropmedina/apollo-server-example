@@ -1,0 +1,11 @@
+type Group {
+	id: ID!
+	name: String!
+	description: String
+	owner: ID!
+	notes: [String]
+}
+
+extend type Query {
+	getGroups: [Group]!
+}
