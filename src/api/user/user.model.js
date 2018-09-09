@@ -32,6 +32,7 @@ const schema = {
 	},
 	isAdmin: {
 		type: Boolean,
+		default: false,
 	},
 };
 

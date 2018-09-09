@@ -1,3 +1,18 @@
+type User {
+	id: ID!
+	name: String!
+	givenName: String!
+	familyName: String
+	email: String!
+	picture: String
+	isAdmin: Boolean!
+}
+
+input SignInInput {
+	idToken: String!
+	accessToken: String!
+}
+
 extend type Mutation {
-	signin(idToken: String): String
+	signIn(input: SignInInput!): User!
 }

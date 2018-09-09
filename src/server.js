@@ -1,8 +1,6 @@
 const { GraphQLServer } = require('graphql-yoga');
 const fs = require('fs');
 
-const { oAuth2Client, signupClient, loginClient } = require('./oAuth2Client');
-
 require('./db')('mongodb://localhost:27017/books');
 
 const graphQLConfig = require('./api');
@@ -17,21 +15,8 @@ const server = new GraphQLServer(graphQLConfig);
 
 module.exports = server;
 
-server.express.get('/signup', async (req, res, next) => {
-	const code = await req.query.code;
-	const { tokens } = await oAuth2Client.getToken(code);
-	next();
-
-	// save tokens locally for development
-	fs.writeFile('tokens.json', JSON.stringify(tokens), err => {
-		if (err) throw err;
-		console.log('tokens were saved!');
-	});
-});
-
 server.start(options, ({ port }) => {
 	console.log(`🚀  Server is up on port ${port}`);
-	// signupClient();
 });
 
 // -----------------------------------------------------------------
