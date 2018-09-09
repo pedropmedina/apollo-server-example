@@ -7,9 +7,10 @@ const tokens = require('../tokens.json');
 
 // instantiate OAuth2Client
 const oAuth2Client = new google.auth.OAuth2(
-	keys.web.client_id,
-	keys.web.client_secret,
-	keys.web.redirect_uris[0],
+	'579012218555-5b5eq8atbcbkv7h6q8fafqj86od1ot5m.apps.googleusercontent.com',
+	// keys.web.client_id,
+	// keys.web.client_secret,
+	// keys.web.redirect_uris[0],
 );
 
 // set credentials for development

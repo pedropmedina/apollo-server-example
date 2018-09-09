@@ -6,14 +6,29 @@ const { Schema } = mongoose;
 mongoose.set('useCreateIndex', true);
 
 const schema = {
+	userId: {
+		type: String,
+		required: true,
+		unique: true,
+	},
 	name: {
 		type: String,
 		required: true,
+	},
+	givenName: {
+		type: String,
+		required: true,
+	},
+	familyName: {
+		type: String,
 	},
 	email: {
 		type: String,
 		required: true,
 		unique: true,
+	},
+	picture: {
+		type: String,
 	},
 	isAdmin: {
 		type: Boolean,

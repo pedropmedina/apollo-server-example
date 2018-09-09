@@ -1,3 +1,3 @@
-extend type Query {
-	signin: String
+extend type Mutation {
+	signin(idToken: String): String
 }
