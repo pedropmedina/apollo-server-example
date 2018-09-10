@@ -22,7 +22,7 @@ const updateGroup = async (root, { input }, ctx, info) => {
 	return updateOne(ctx.models.group, input);
 };
 
-const removeGroup = async (root, args, ctx, info) => {
+const deleteGroup = async (root, args, ctx, info) => {
 	return deleteOne(ctx.models.group, args.groupId);
 };
 
@@ -34,12 +34,14 @@ module.exports = {
 	Mutation: {
 		newGroup,
 		updateGroup,
-		removeGroup,
+		deleteGroup,
 	},
 	Group: {
 		owner: async (root, args, ctx, info) => {
-			const owner = await ctx.models.user.findById(root.owner).exec();
-			return owner;
+			return await ctx.models.user.findById(root.owner).exec();
+		},
+		notes: async (root, args, ctx, info) => {
+			return ctx.models.note.find({ group: root.id }).exec();
 		},
 	},
 };

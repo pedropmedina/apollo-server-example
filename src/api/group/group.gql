@@ -2,7 +2,7 @@ type Group {
 	id: ID!
 	name: String!
 	description: String
-	owner: User
+	owner: User!
 	notes: [Note]!
 }
 
@@ -26,5 +26,5 @@ extend type Query {
 extend type Mutation {
 	newGroup(input: NewGroupInput!): Group!
 	updateGroup(input: NewGroupUpdateInput!): Group!
-	removeGroup(groupId: ID!): Group!
+	deleteGroup(groupId: ID!): Group!
 }

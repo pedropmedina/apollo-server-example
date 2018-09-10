@@ -16,3 +16,5 @@ const schema = {
 const noteSchema = new Schema(schema, { timestamps: true });
 
 const Note = mongoose.model('Note', noteSchema);
+
+module.exports = Note;
