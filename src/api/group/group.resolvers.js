@@ -1,4 +1,5 @@
 const Group = require('./group.model');
+const { createOne } = require('../CRUD');
 
 const getGroups = async (root, args, ctx, info) => {
 	const groups = await Group.find().exec();
@@ -6,8 +7,7 @@ const getGroups = async (root, args, ctx, info) => {
 };
 
 const getGroup = async (root, args, ctx, info) => {
-	const group = await Group.findById(args.groupId).exec();
-	return group;
+	return createOne(ctx.models.group, args.input);
 };
 
 const newGroup = async (root, args, ctx, info) => {
