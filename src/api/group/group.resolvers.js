@@ -22,6 +22,12 @@ const updateGroup = async (root, { input }, ctx, info) => {
 	return update;
 };
 
+const removeGroup = async (root, args, ctx, info) => {
+	const group = await Group.findByIdAndRemove(args.groupId).exec();
+	console.log(group);
+	return group;
+};
+
 module.exports = {
 	Query: {
 		getGroups,
@@ -30,6 +36,7 @@ module.exports = {
 	Mutation: {
 		newGroup,
 		updateGroup,
+		removeGroup,
 	},
 	Group: {
 		owner: async (root, args, ctx, info) => {
