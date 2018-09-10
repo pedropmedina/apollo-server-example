@@ -24,11 +24,6 @@ const signIn = async (root, { input }, ctx, info) => {
 	});
 	const payload = verification.getPayload();
 
-	// momentarily setCredentials here -------------
-	oAuth2Client.setCredentials({
-		access_token: input.accessToken,
-	});
-
 	const { sub, name, given_name, family_name, email, picture } = payload;
 
 	const user = {
@@ -44,15 +39,26 @@ const signIn = async (root, { input }, ctx, info) => {
 		const foundUser = await User.findOne({ userId: user.userId });
 
 		if (foundUser) {
-			console.log('user found => ', foundUser);
+			oAuth2Client.setCredentials({
+				access_token: input.accessToken,
+			});
+
+			console.log(foundUser);
+
 			return foundUser;
 		} else {
+			oAuth2Client.setCredentials({
+				access_token: input.accessToken,
+			});
+
 			const newUser = await User.create(user);
+
 			console.log(newUser);
+
 			return newUser;
 		}
 	} catch (error) {
-		console.log(error.message);
+		console.error(error.message);
 	}
 };
 

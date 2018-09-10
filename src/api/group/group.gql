@@ -2,10 +2,21 @@ type Group {
 	id: ID!
 	name: String!
 	description: String
+	owner: User
+	notes: [String]!
+}
+
+input NewGroupInput {
+	name: String!
+	description: String
 	owner: ID!
-	notes: [String]
 }
 
 extend type Query {
 	getGroups: [Group]!
+	getGroup(groupId: ID!): Group!
+}
+
+extend type Mutation {
+	newGroup(input: NewGroupInput!): Group!
 }

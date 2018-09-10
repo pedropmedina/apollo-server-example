@@ -27,6 +27,7 @@ module.exports = {
 	context: ({ request }) => ({
 		models: {
 			group: group.model,
+			user: user.model,
 		},
 	}),
 };
