@@ -5,11 +5,11 @@ const User = require('./user.model');
 const clientId =
 	'579012218555-5b5eq8atbcbkv7h6q8fafqj86od1ot5m.apps.googleusercontent.com';
 
-const oAuth2Client = new google.auth.OAuth2(clientId);
+const client = new google.auth.OAuth2(clientId);
 
 // set auth globally
 google.options({
-	auth: oAuth2Client,
+	auth: client,
 });
 
 const signIn = async (root, { input }, ctx, info) => {
@@ -18,7 +18,7 @@ const signIn = async (root, { input }, ctx, info) => {
 	// 2. The value of the aud equals one of app's client IDs
 	// 3. The value of iss equals accounts.google.com
 	// 4. Check the exp of token has not passed.
-	const verification = await oAuth2Client.verifyIdToken({
+	const verification = await client.verifyIdToken({
 		idToken: input.idToken,
 		audience: clientId,
 	});
@@ -39,21 +39,17 @@ const signIn = async (root, { input }, ctx, info) => {
 		const foundUser = await User.findOne({ userId: user.userId });
 
 		if (foundUser) {
-			oAuth2Client.setCredentials({
+			client.setCredentials({
 				access_token: input.accessToken,
 			});
 
-			console.log(foundUser);
-
 			return foundUser;
 		} else {
-			oAuth2Client.setCredentials({
+			client.setCredentials({
 				access_token: input.accessToken,
 			});
 
 			const newUser = await User.create(user);
-
-			console.log(newUser);
 
 			return newUser;
 		}

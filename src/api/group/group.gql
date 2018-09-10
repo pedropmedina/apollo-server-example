@@ -3,13 +3,19 @@ type Group {
 	name: String!
 	description: String
 	owner: User
-	notes: [String]!
+	notes: [Note]!
 }
 
 input NewGroupInput {
 	name: String!
 	description: String
 	owner: ID!
+}
+
+input NewGroupUpdateInput {
+	id: ID!
+	name: String
+	description: String
 }
 
 extend type Query {
@@ -19,4 +25,5 @@ extend type Query {
 
 extend type Mutation {
 	newGroup(input: NewGroupInput!): Group!
+	updateGroup(input: NewGroupUpdateInput!): Group!
 }

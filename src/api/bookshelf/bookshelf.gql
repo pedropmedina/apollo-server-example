@@ -8,5 +8,5 @@ type Bookshelf {
 
 type Query {
 	getBookshelves: [Bookshelf]!
-	getBookshelf(shelfId: Int): Bookshelf
+	getBookshelf(shelfId: Int!): Bookshelf!
 }

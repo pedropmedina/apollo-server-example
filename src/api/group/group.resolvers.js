@@ -10,9 +10,16 @@ const getGroup = async (root, args, ctx, info) => {
 	return group;
 };
 
-const newGroup = async (roor, args, ctx, info) => {
+const newGroup = async (root, args, ctx, info) => {
 	const group = await Group.create(args.input);
 	return group;
+};
+
+const updateGroup = async (root, { input }, ctx, info) => {
+	const { id, ...rest } = input;
+	const update = Group.findByIdAndUpdate(id, { $set: rest }, { new: true });
+	console.log(update);
+	return update;
 };
 
 module.exports = {
@@ -22,6 +29,7 @@ module.exports = {
 	},
 	Mutation: {
 		newGroup,
+		updateGroup,
 	},
 	Group: {
 		owner: async (root, args, ctx, info) => {
