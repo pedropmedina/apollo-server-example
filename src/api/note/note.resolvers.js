@@ -36,4 +36,13 @@ module.exports = {
 		updateNote,
 		deleteNote,
 	},
+	Note: {
+		group: async (root, args, ctx, info) => {
+			try {
+				return ctx.models.group.findById(root.group).exec();
+			} catch (error) {
+				console.error(error.message);
+			}
+		},
+	},
 };
