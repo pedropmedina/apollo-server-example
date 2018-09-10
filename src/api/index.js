@@ -5,29 +5,33 @@ const volume = require('./volume');
 const search = require('./search');
 const user = require('./user');
 const group = require('./group');
+const note = require('./note');
 
 module.exports = {
 	typeDefs: [
-		user.typeDefs,
 		bookshelf.typeDefs,
 		volume.typeDefs,
 		search.typeDefs,
+		user.typeDefs,
 		group.typeDefs,
+		note.typeDefs,
 	].join(' '),
 
 	resolvers: merge(
 		{},
-		user.resolvers,
 		bookshelf.resolvers,
 		volume.resolvers,
 		search.resolvers,
+		user.resolvers,
 		group.resolvers,
+		note.resolvers,
 	),
 
 	context: ({ request }) => ({
 		models: {
-			group: group.model,
 			user: user.model,
+			group: group.model,
+			note: note.model,
 		},
 	}),
 };

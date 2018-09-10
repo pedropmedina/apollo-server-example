@@ -19,25 +19,6 @@ server.start(options, ({ port }) => {
 	console.log(`🚀  Server is up on port ${port}`);
 });
 
-// -----------------------------------------------------------------
-/**
- * singup with Google
- * 		1. user clicks singup button at '/signup'
- * 		2. user is shown the consent form
- * 		3. user is redirected to '/signup'
- * 		4. save refresh_token to db
- * 		5. make call to get user's profile and save to db
- * 		6. send user to home page
- *
- * login with Google
- * 		1. user clicks login button at '/login'
- * 		2. user is provided with 'code' in query
- * 		3. oAuth2Client.verifyToken(token)
- * 		4. check our db for matching email address
- * 		5. set_credentials with refresh_token from db
- * 		6. send user to homepage
- */
-
 // ------------------------------------------------------------------
 // Configuration setting for Graphql files
 // 1. Install extendion grapql for visual studios

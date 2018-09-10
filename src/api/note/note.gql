@@ -1,0 +1,18 @@
+type Note {
+	id: ID!
+	content: String!
+	group: Group!
+}
+
+input NewNoteInput {
+	content: String!
+	group: ID!
+}
+
+extend type Query {
+	getNote(noteId: ID!): Note!
+}
+
+extend type Mutation {
+	newNote(input: NewNoteInput!): Note
+}
