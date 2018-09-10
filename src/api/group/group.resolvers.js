@@ -1,31 +1,29 @@
-const Group = require('./group.model');
-const { createOne } = require('../CRUD');
+const {
+	createOne,
+	readOne,
+	readMany,
+	updateOne,
+	deleteOne,
+} = require('../CRUD');
 
 const getGroups = async (root, args, ctx, info) => {
-	const groups = await Group.find().exec();
-	return groups;
+	return readMany(ctx.models.group);
 };
 
 const getGroup = async (root, args, ctx, info) => {
-	return createOne(ctx.models.group, args.input);
+	return readOne(ctx.models.group, args.groupId);
 };
 
 const newGroup = async (root, args, ctx, info) => {
-	const group = await Group.create(args.input);
-	return group;
+	return createOne(ctx.models.group, args.input);
 };
 
 const updateGroup = async (root, { input }, ctx, info) => {
-	const { id, ...rest } = input;
-	const update = Group.findByIdAndUpdate(id, { $set: rest }, { new: true });
-	console.log(update);
-	return update;
+	return updateOne(ctx.models.group, input);
 };
 
 const removeGroup = async (root, args, ctx, info) => {
-	const group = await Group.findByIdAndRemove(args.groupId).exec();
-	console.log(group);
-	return group;
+	return deleteOne(ctx.models.group, args.groupId);
 };
 
 module.exports = {

@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 
+// Avoid DeprecationWarning: collection.findAndModify
+// READ MORE: https://github.com/Automattic/mongoose/issues/6880
+mongoose.set('useFindAndModify', false);
+
 module.exports = async url => {
 	try {
 		await mongoose.connect(

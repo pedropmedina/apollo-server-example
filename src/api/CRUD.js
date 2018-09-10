@@ -1,6 +1,6 @@
 const createOne = async (model, input) => {
 	try {
-		return await model.create(input).exec();
+		return await model.create(input);
 	} catch (error) {
 		console.error(error.message);
 	}
@@ -8,7 +8,7 @@ const createOne = async (model, input) => {
 
 const readOne = async (model, id) => {
 	try {
-		return await mode.findById(id).exec();
+		return await model.findById(id).exec();
 	} catch (error) {
 		console.error(error.message);
 	}
@@ -25,9 +25,7 @@ const readMany = async model => {
 const updateOne = async (model, input) => {
 	try {
 		const { id, ...update } = input;
-		return await model
-			.findByIdAndUpdate(id, { $set: update }, { new: true })
-			.exec();
+		return await model.findByIdAndUpdate(id, { $set: update }, { new: true });
 	} catch (error) {
 		console.error(error.message);
 	}
