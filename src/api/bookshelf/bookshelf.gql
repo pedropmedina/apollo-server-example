@@ -1,5 +1,5 @@
 type Bookshelf {
-	id: Int!
+	id: ID!
 	selfLink: String!
 	title: String!
 	volumeCount: Int!

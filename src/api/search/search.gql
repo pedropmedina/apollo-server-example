@@ -1,4 +1,4 @@
-union SearchResults = Bookshelf | Volume
+union SearchResults = Bookshelf | Volume | Group | Note
 
 input SearchInput {
 	shelf: Int
