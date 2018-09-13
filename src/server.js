@@ -1,22 +1,13 @@
-const { GraphQLServer } = require('graphql-yoga');
-const fs = require('fs');
+const { ApolloServer } = require('apollo-server');
 
 require('./db')('mongodb://localhost:27017/books');
 
 const graphQLConfig = require('./api');
 
-const options = {
-	port: 5000,
-	endpoint: '/graphql',
-	playground: '/playground',
-};
+const server = new ApolloServer(graphQLConfig);
 
-const server = new GraphQLServer(graphQLConfig);
-
-module.exports = server;
-
-server.start(options, ({ port }) => {
-	console.log(`🚀  Server is up on port ${port}`);
+server.listen({ port: 5000 }).then(({ url }) => {
+	console.log(`🚀  Server is up at ${url}`);
 });
 
 // ------------------------------------------------------------------
