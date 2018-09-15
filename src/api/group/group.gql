@@ -1,10 +1,6 @@
-directive @deprecated(
-	reason: String = "No longer supported"
-) on FIELD_DEFINITION
-
 type Group {
 	id: ID!
-	name: String! @deprecated
+	name: String!
 	description: String
 	owner: User!
 	notes: [Note]!

@@ -1,5 +1,4 @@
 const merge = require('lodash/merge');
-const { SchemaDirectiveVisitor } = require('graphql-tools');
 
 const bookshelf = require('./bookshelf');
 const volume = require('./volume');
@@ -7,19 +6,6 @@ const search = require('./search');
 const user = require('./user');
 const group = require('./group');
 const note = require('./note');
-
-// Implementing deprecated directive
-class DeprecatedDirective extends SchemaDirectiveVisitor {
-	visitFieldDefinition(field) {
-		field.isDeprecated = true;
-		field.deprecationReason = this.args.reason;
-	}
-
-	visitEnumValue(value) {
-		value.isDeprecated = true;
-		value.deprecationReason = this.args.reason;
-	}
-}
 
 module.exports = {
 	typeDefs: [
@@ -48,8 +34,4 @@ module.exports = {
 			note: note.model,
 		},
 	}),
-
-	schemaDirectives: {
-		deprecated: DeprecatedDirective,
-	},
 };
