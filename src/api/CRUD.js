@@ -6,7 +6,7 @@ const createOne = async (model, input) => {
 	}
 };
 
-const readOne = async (model, id, owner) => {
+const readOne = async (model, id, owner = '') => {
 	try {
 		return await model.findOne({ _id: id, owner }).exec();
 	} catch (error) {
@@ -14,7 +14,7 @@ const readOne = async (model, id, owner) => {
 	}
 };
 
-const readMany = async (model, owner) => {
+const readMany = async (model, owner = '') => {
 	try {
 		return await model.find({ owner }).exec();
 	} catch (error) {
@@ -22,7 +22,7 @@ const readMany = async (model, owner) => {
 	}
 };
 
-const updateOne = async (model, input, owner) => {
+const updateOne = async (model, input, owner = '') => {
 	try {
 		const { id, ...update } = input;
 		return await model.findOneAndUpdate(
@@ -35,7 +35,7 @@ const updateOne = async (model, input, owner) => {
 	}
 };
 
-const deleteOne = async (model, id, owner) => {
+const deleteOne = async (model, id, owner = '') => {
 	try {
 		return await model.findOneAndDelete({ _id: id, owner }).exec();
 	} catch (error) {

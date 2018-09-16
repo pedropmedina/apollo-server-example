@@ -23,6 +23,8 @@ const signIn = async (root, { input }, ctx, info) => {
 		picture,
 	};
 
+	console.log(ctx.req.headers.authorization);
+
 	try {
 		const foundUser = await ctx.models.user.findOne({ userId: user.userId });
 

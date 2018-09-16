@@ -4,6 +4,11 @@ type Note {
 	group: Group!
 }
 
+input NoteInput {
+	id: ID!
+	group: ID!
+}
+
 input NewNoteInput {
 	content: String!
 	group: ID!
@@ -12,15 +17,16 @@ input NewNoteInput {
 input NoteUpdateInput {
 	id: ID!
 	content: String
+	group: ID!
 }
 
 extend type Query {
-	getNote(noteId: ID!): Note!
-	getNotes: [Note]!
+	getNote(input: NoteInput!): Note!
+	getNotes(group: ID!): [Note]!
 }
 
 extend type Mutation {
 	newNote(input: NewNoteInput!): Note!
 	updateNote(input: NoteUpdateInput!): Note!
-	deleteNote(noteId: ID!): Note!
+	deleteNote(input: NoteInput!): Note!
 }
