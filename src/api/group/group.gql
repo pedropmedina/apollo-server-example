@@ -19,11 +19,11 @@ input NewGroupUpdateInput {
 
 extend type Query {
 	getGroups: [Group]!
-	getGroup(groupId: ID!): Group!
+	getGroup(id: ID!): Group!
 }
 
 extend type Mutation {
 	newGroup(input: NewGroupInput!): Group!
 	updateGroup(input: NewGroupUpdateInput!): Group!
-	deleteGroup(groupId: ID!): Group!
+	deleteGroup(id: ID!): Group!
 }

@@ -1,37 +1,70 @@
-const {
-	createOne,
-	readOne,
-	readMany,
-	updateOne,
-	deleteOne,
-} = require('../CRUD');
-
 const getUser = require('../../utils/getUser');
 
 const getGroups = async (root, args, ctx, info) => {
-	const user = await getUser(ctx);
-	return readMany(ctx.models.group, (owner = user.id));
+	try {
+		const user = await getUser(ctx);
+		return await ctx.models.group.find({ owner: user.id }).exec();
+	} catch (error) {
+		console.error(error.message);
+	}
 };
 
 const getGroup = async (root, args, ctx, info) => {
-	const user = await getUser(ctx);
-	return readOne(ctx.models.group, args.groupId, (owner = user.id));
+	try {
+		const user = await getUser(ctx);
+		return await ctx.models.group
+			.findOne({ _id: args.id, owner: user.id })
+			.exec();
+	} catch (error) {
+		console.error(error.message);
+	}
 };
 
-const newGroup = async (root, args, ctx, info) => {
-	const user = await getUser(ctx);
-	const groupInput = { ...args.input, owner: user.id };
-	return createOne(ctx.models.group, groupInput);
+const newGroup = async (root, { input }, ctx, info) => {
+	try {
+		const user = await getUser(ctx);
+		return await ctx.models.group.create({ ...input, owner: user.id });
+	} catch (error) {
+		console.error(error.message);
+	}
 };
 
 const updateGroup = async (root, { input }, ctx, info) => {
-	const user = await getUser(ctx);
-	return updateOne(ctx.models.group, input, (owner = user.id));
+	try {
+		const user = await getUser(ctx);
+		const { id, ...update } = input;
+		return await ctx.models.group
+			.findOneAndUpdate(
+				{ _id: id, owner: user.id },
+				{ $set: update },
+				{ new: true },
+			)
+			.exec();
+	} catch (error) {
+		console.error(error.message);
+	}
 };
 
 const deleteGroup = async (root, args, ctx, info) => {
-	const user = await getUser(ctx);
-	return deleteOne(ctx.models.group, args.groupId, (owner = user.id));
+	try {
+		const user = await getUser(ctx);
+		return await ctx.models.group
+			.findOneAndDelete({
+				_id: args.id,
+				owner: user.id,
+			})
+			.exec();
+	} catch (error) {
+		console.error(error.message);
+	}
+};
+
+const owner = async (root, args, ctx, info) => {
+	return await ctx.models.user.findById(root.owner).exec();
+};
+
+const note = async (root, args, ctx, info) => {
+	return ctx.models.note.find({ group: root.id }).exec();
 };
 
 module.exports = {
@@ -45,11 +78,7 @@ module.exports = {
 		deleteGroup,
 	},
 	Group: {
-		owner: async (root, args, ctx, info) => {
-			return await ctx.models.user.findById(root.owner).exec();
-		},
-		notes: async (root, args, ctx, info) => {
-			return ctx.models.note.find({ group: root.id }).exec();
-		},
+		owner,
+		notes,
 	},
 };
