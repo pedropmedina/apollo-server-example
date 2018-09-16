@@ -25,13 +25,13 @@ const newGroup = async (root, args, ctx, info) => {
 };
 
 const updateGroup = async (root, { input }, ctx, info) => {
-	await getUser(ctx);
-	return updateOne(ctx.models.group, input);
+	const user = await getUser(ctx);
+	return updateOne(ctx.models.group, input, (owner = user.id));
 };
 
 const deleteGroup = async (root, args, ctx, info) => {
-	await getUser(ctx);
-	return deleteOne(ctx.models.group, args.groupId);
+	const user = await getUser(ctx);
+	return deleteOne(ctx.models.group, args.groupId, (owner = user.id));
 };
 
 module.exports = {

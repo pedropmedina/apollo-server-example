@@ -22,18 +22,22 @@ const readMany = async (model, owner) => {
 	}
 };
 
-const updateOne = async (model, input) => {
+const updateOne = async (model, input, owner) => {
 	try {
 		const { id, ...update } = input;
-		return await model.findByIdAndUpdate(id, { $set: update }, { new: true });
+		return await model.findOneAndUpdate(
+			{ _id: id, owner },
+			{ $set: update },
+			{ new: true },
+		);
 	} catch (error) {
 		console.error(error.message);
 	}
 };
 
-const deleteOne = async (model, id) => {
+const deleteOne = async (model, id, owner) => {
 	try {
-		return await model.findByIdAndRemove(id).exec();
+		return await model.findOneAndDelete({ _id: id, owner }).exec();
 	} catch (error) {
 		console.error(error);
 	}
