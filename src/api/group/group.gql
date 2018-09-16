@@ -9,7 +9,6 @@ type Group {
 input NewGroupInput {
 	name: String!
 	description: String
-	owner: ID!
 }
 
 input NewGroupUpdateInput {

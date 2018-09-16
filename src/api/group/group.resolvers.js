@@ -6,23 +6,31 @@ const {
 	deleteOne,
 } = require('../CRUD');
 
+const getUser = require('../../utils/getUser');
+
 const getGroups = async (root, args, ctx, info) => {
-	return readMany(ctx.models.group);
+	const user = await getUser(ctx);
+	return readMany(ctx.models.group, (owner = user.id));
 };
 
 const getGroup = async (root, args, ctx, info) => {
-	return readOne(ctx.models.group, args.groupId);
+	const user = await getUser(ctx);
+	return readOne(ctx.models.group, args.groupId, (owner = user.id));
 };
 
 const newGroup = async (root, args, ctx, info) => {
-	return createOne(ctx.models.group, args.input);
+	const user = await getUser(ctx);
+	const groupInput = { ...args.input, owner: user.id };
+	return createOne(ctx.models.group, groupInput);
 };
 
 const updateGroup = async (root, { input }, ctx, info) => {
+	await getUser(ctx);
 	return updateOne(ctx.models.group, input);
 };
 
 const deleteGroup = async (root, args, ctx, info) => {
+	await getUser(ctx);
 	return deleteOne(ctx.models.group, args.groupId);
 };
 

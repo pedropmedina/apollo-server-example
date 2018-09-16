@@ -2,7 +2,7 @@ type Bookshelf {
 	id: ID!
 	selfLink: String!
 	title: String!
-	volumeCount: Int!
+	volumeCount: Int
 	volumes: [Volume]!
 }
 

@@ -6,17 +6,17 @@ const createOne = async (model, input) => {
 	}
 };
 
-const readOne = async (model, id) => {
+const readOne = async (model, id, owner) => {
 	try {
-		return await model.findById(id).exec();
+		return await model.findOne({ _id: id, owner }).exec();
 	} catch (error) {
 		console.error(error.message);
 	}
 };
 
-const readMany = async model => {
+const readMany = async (model, owner) => {
 	try {
-		return await model.find({}).exec();
+		return await model.find({ owner }).exec();
 	} catch (error) {
 		console.error(error.message);
 	}

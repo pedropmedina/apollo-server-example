@@ -27,7 +27,8 @@ module.exports = {
 		note.resolvers,
 	),
 
-	context: ({ request }) => ({
+	context: ({ req }) => ({
+		req,
 		models: {
 			user: user.model,
 			group: group.model,
