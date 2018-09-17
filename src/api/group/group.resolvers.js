@@ -12,9 +12,10 @@ const getGroups = async (root, args, ctx, info) => {
 const getGroup = async (root, args, ctx, info) => {
 	try {
 		const user = await getUser(ctx);
-		return await ctx.models.group
-			.findOne({ _id: args.id, owner: user.id })
-			.exec();
+		return await ctx.loaders.group.load(args.id);
+		// return await ctx.models.group
+		// 	.findOne({ _id: args.id, owner: user.id })
+		// 	.exec();
 	} catch (error) {
 		console.error(error.message);
 	}
@@ -63,7 +64,7 @@ const owner = async (root, args, ctx, info) => {
 	return await ctx.models.user.findById(root.owner).exec();
 };
 
-const note = async (root, args, ctx, info) => {
+const notes = async (root, args, ctx, info) => {
 	return ctx.models.note.find({ group: root.id }).exec();
 };
 

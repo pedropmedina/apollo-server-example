@@ -7,6 +7,8 @@ const user = require('./user');
 const group = require('./group');
 const note = require('./note');
 
+const loaders = require('./loaders');
+
 module.exports = {
 	typeDefs: [
 		bookshelf.typeDefs,
@@ -34,5 +36,6 @@ module.exports = {
 			group: group.model,
 			note: note.model,
 		},
+		loaders: loaders(),
 	}),
 };

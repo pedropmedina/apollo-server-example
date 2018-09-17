@@ -10,3 +10,6 @@ node_modules
 # Tokens and keys for local development
 tokens.json
 keys.json
+
+# Notes for later reference
+NOTES.md
