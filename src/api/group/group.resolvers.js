@@ -1,9 +1,9 @@
-const getUser = require('../../utils/getUser');
+const getUserId = require('../../utils/getUserId');
 
 const getGroups = async (root, args, ctx, info) => {
 	try {
-		const user = await getUser({ req: ctx.req, User: ctx.models.user });
-		return await ctx.models.group.find({ owner: user.id }).exec();
+		const owner = await getUserId({ req: ctx.req, User: ctx.models.user });
+		return await ctx.models.group.find({ owner }).exec();
 	} catch (error) {
 		console.error(error.message);
 	}
@@ -19,8 +19,8 @@ const getGroup = async (root, args, ctx, info) => {
 
 const newGroup = async (root, { input }, ctx, info) => {
 	try {
-		const user = await getUser({ req: ctx.req, User: ctx.models.user });
-		return await ctx.models.group.create({ ...input, owner: user.id });
+		const owner = await getUserId({ req: ctx.req, User: ctx.models.user });
+		return await ctx.models.group.create({ ...input, owner });
 	} catch (error) {
 		console.error(error.message);
 	}
@@ -28,14 +28,10 @@ const newGroup = async (root, { input }, ctx, info) => {
 
 const updateGroup = async (root, { input }, ctx, info) => {
 	try {
-		const user = await getUser({ req: ctx.req, User: ctx.models.user });
+		const owner = await getUserId({ req: ctx.req, User: ctx.models.user });
 		const { id, ...update } = input;
 		return await ctx.models.group
-			.findOneAndUpdate(
-				{ _id: id, owner: user.id },
-				{ $set: update },
-				{ new: true },
-			)
+			.findOneAndUpdate({ _id: id, owner }, { $set: update }, { new: true })
 			.exec();
 	} catch (error) {
 		console.error(error.message);
@@ -44,11 +40,11 @@ const updateGroup = async (root, { input }, ctx, info) => {
 
 const deleteGroup = async (root, args, ctx, info) => {
 	try {
-		const user = await getUser({ req: ctx.req, User: ctx.models.user });
+		const owner = await getUserId({ req: ctx.req, User: ctx.models.user });
 		return await ctx.models.group
 			.findOneAndDelete({
 				_id: args.id,
-				owner: user.id,
+				owner,
 			})
 			.exec();
 	} catch (error) {

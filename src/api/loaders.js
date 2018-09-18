@@ -2,7 +2,7 @@ const Dataloader = require('dataloader');
 const { keyBy, groupBy } = require('lodash');
 
 // getUser utility function
-const getUser = require('../utils/getUser');
+const getUserId = require('../utils/getUserId');
 
 // require models to be use with Dataloader
 const Group = require('./group/group.model');
@@ -12,11 +12,11 @@ const User = require('./user/user.model');
 const createGroupLoader = req => {
 	return new Dataloader(async groupIds => {
 		// get verified user to find groups where owner is user.id
-		const user = await getUser({ req, User });
+		const owner = await getUserId({ req, User });
 		// find all groups whose id is in groupIds batch array
 		const groups = await Group.find({
 			_id: { $in: groupIds },
-			owner: user.id,
+			owner,
 		}).exec();
 		// transform groups array into object keyed with their _id
 		const groupsById = keyBy(groups, '_id');
