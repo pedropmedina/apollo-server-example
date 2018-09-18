@@ -1,9 +1,9 @@
 const oAuth2Client = require('../oAuth2Client');
 
-module.exports = async ctx => {
+module.exports = async ({ req, User }) => {
 	try {
 		// get idToken from the headers
-		const idToken = ctx.req.headers.authorization;
+		const idToken = req.headers.authorization;
 
 		if (idToken) {
 			// verify the idToken
@@ -13,7 +13,7 @@ module.exports = async ctx => {
 			const userId = verification.getUserId();
 
 			// find user in db whose userId property matches that from google
-			return await ctx.models.user.findOne({ userId }).exec();
+			return await User.findOne({ userId }).exec();
 		}
 
 		// if not idToken provided throw error

@@ -36,6 +36,6 @@ module.exports = {
 			group: group.model,
 			note: note.model,
 		},
-		loaders: loaders(),
+		loaders: loaders(req),
 	}),
 };
