@@ -61,7 +61,8 @@ const owner = async (root, args, ctx, info) => {
 };
 
 const notes = async (root, args, ctx, info) => {
-	return ctx.models.note.find({ group: root.id }).exec();
+	const notesInGroup = await ctx.loaders.notesByGroup.load(root.id);
+	return notesInGroup === undefined ? [] : notesInGroup;
 };
 
 module.exports = {

@@ -1,5 +1,5 @@
 const Dataloader = require('dataloader');
-const { keyBy } = require('lodash');
+const { keyBy, groupBy } = require('lodash');
 
 // getUser utility function
 const getUser = require('../utils/getUser');
@@ -27,9 +27,17 @@ const createGroupLoader = req => {
 	});
 };
 
+const createNotesByGroup = () => {
+	return new Dataloader(async groupIds => {
+		const notes = await Note.find({ group: { $in: groupIds } }).exec();
+		const notesByGroup = groupBy(notes, 'group');
+		return groupIds.map(groupId => notesByGroup[groupId]);
+	});
+};
+
 const createOwnerLoader = () => {
 	return new Dataloader(async ownerIds => {
-		const users = await User.find({ _id: { $in: ownerIds } });
+		const users = await User.find({ _id: { $in: ownerIds } }).exec();
 		const userById = keyBy(users, '_id');
 		return ownerIds.map(ownerId => userById[ownerId]);
 	});
@@ -42,5 +50,6 @@ module.exports = req => {
 	return {
 		group: createGroupLoader(req),
 		owner: createOwnerLoader(),
+		notesByGroup: createNotesByGroup(),
 	};
 };
