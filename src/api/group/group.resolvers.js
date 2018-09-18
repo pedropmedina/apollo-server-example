@@ -57,7 +57,7 @@ const deleteGroup = async (root, args, ctx, info) => {
 };
 
 const owner = async (root, args, ctx, info) => {
-	return await ctx.models.user.findById(root.owner).exec();
+	return ctx.loaders.owner.load(root.owner);
 };
 
 const notes = async (root, args, ctx, info) => {

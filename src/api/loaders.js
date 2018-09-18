@@ -27,11 +27,20 @@ const createGroupLoader = req => {
 	});
 };
 
+const createOwnerLoader = () => {
+	return new Dataloader(async ownerIds => {
+		const users = await User.find({ _id: { $in: ownerIds } });
+		const userById = keyBy(users, '_id');
+		return ownerIds.map(ownerId => userById[ownerId]);
+	});
+};
+
 // export new instances of Dataloader in function
 // in order to ensure that each user access his/her
 // own instance, avoiding shared cache among users
 module.exports = req => {
 	return {
 		group: createGroupLoader(req),
+		owner: createOwnerLoader(),
 	};
 };
