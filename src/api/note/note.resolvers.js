@@ -54,7 +54,7 @@ const deleteNote = async (root, { input }, ctx, info) => {
 
 const group = async (root, args, ctx, info) => {
 	try {
-		return ctx.models.group.findById(root.group).exec();
+		return ctx.loaders.group.load(root.group);
 	} catch (error) {
 		console.error(error.message);
 	}
