@@ -12,10 +12,8 @@ const getBookshelf = async (root, args, ctx, info) => {
 };
 
 const volumes = async (root, args, ctx, info) => {
-	const res = await books.mylibrary.bookshelves.volumes.list({
-		shelf: root.id,
-	});
-	return res.data.items;
+	const volumes = await ctx.loaders.volumes.load(root.id);
+	return !volumes ? [] : volumes;
 };
 
 module.exports = {

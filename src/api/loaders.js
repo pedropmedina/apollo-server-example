@@ -47,13 +47,24 @@ const createOwnerLoader = () => {
 	});
 };
 
-const CreateBookshelfLoader = () => {
-	return new Dataloader(async bookshelfIds => {
-		return await bookshelfIds.map(async bookshelfId => {
+const createBookshelfLoader = () => {
+	return new Dataloader(async shelfIds => {
+		return await shelfIds.map(async shelfId => {
 			const { data } = await books.mylibrary.bookshelves.get({
-				shelf: bookshelfId,
+				shelf: shelfId,
 			});
 			return data;
+		});
+	});
+};
+
+const createVolumesLoader = () => {
+	return new Dataloader(async shelfIds => {
+		return await shelfIds.map(async shelfId => {
+			const { data } = await books.mylibrary.bookshelves.volumes.list({
+				shelf: shelfId,
+			});
+			return data.items;
 		});
 	});
 };
@@ -66,6 +77,7 @@ module.exports = req => {
 		group: createGroupLoader(req),
 		owner: createOwnerLoader(),
 		notesByGroup: createNotesByGroup(),
-		bookshelf: CreateBookshelfLoader(),
+		bookshelf: createBookshelfLoader(),
+		volumes: createVolumesLoader(),
 	};
 };
