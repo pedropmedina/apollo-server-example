@@ -1,5 +1,9 @@
 const Dataloader = require('dataloader');
 const { keyBy, groupBy } = require('lodash');
+const { google } = require('googleapis');
+
+// get books from google api
+const books = google.books('v1');
 
 // getUser utility function
 const getUserId = require('../utils/getUserId');
@@ -43,6 +47,17 @@ const createOwnerLoader = () => {
 	});
 };
 
+const CreateBookshelfLoader = () => {
+	return new Dataloader(async bookshelfIds => {
+		return await bookshelfIds.map(async bookshelfId => {
+			const { data } = await books.mylibrary.bookshelves.get({
+				shelf: bookshelfId,
+			});
+			return data;
+		});
+	});
+};
+
 // export new instances of Dataloader in function
 // in order to ensure that each user access his/her
 // own instance, avoiding shared cache among users
@@ -51,5 +66,6 @@ module.exports = req => {
 		group: createGroupLoader(req),
 		owner: createOwnerLoader(),
 		notesByGroup: createNotesByGroup(),
+		bookshelf: CreateBookshelfLoader(),
 	};
 };

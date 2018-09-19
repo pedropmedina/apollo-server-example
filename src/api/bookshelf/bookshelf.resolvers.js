@@ -8,8 +8,7 @@ const getBookshelves = async (root, args, ctx, info) => {
 };
 
 const getBookshelf = async (root, args, ctx, info) => {
-	const res = await books.mylibrary.bookshelves.get({ shelf: args.shelfId });
-	return res.data;
+	return ctx.loaders.bookshelf.load(args.shelfId);
 };
 
 const volumes = async (root, args, ctx, info) => {
