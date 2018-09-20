@@ -7,7 +7,7 @@ mongoose.set('useFindAndModify', false);
 module.exports = async url => {
 	try {
 		await mongoose.connect(
-			url,
+			url || process.env.MONGODB_URI,
 			{ useNewUrlParser: true },
 		);
 		console.log('🔌  Successful db connection.');

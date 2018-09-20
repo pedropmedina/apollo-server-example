@@ -13,3 +13,6 @@ keys.json
 
 # Notes for later reference
 NOTES.md
+
+# Environment variables
+.env
