@@ -3,13 +3,12 @@ const { google } = require('googleapis');
 const books = google.books('v1');
 
 const getVolumes = async (root, args, ctx, info) => {
-	const volumes = await ctx.loaders.volumes.load(args.shelfId);
+	const volumes = await ctx.loaders.volumes.load(args.shelf);
 	return !volumes ? [] : volumes;
 };
 
 const getVolume = async (root, args, ctx, info) => {
-	const res = await books.volumes.get({ volumeId: args.volumeId });
-	return res.data;
+	return ctx.loaders.volume.load(args.id);
 };
 
 const addVolume = async (root, { input }, ctx, info) => {

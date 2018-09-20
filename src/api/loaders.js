@@ -69,6 +69,15 @@ const createVolumesLoader = () => {
 	});
 };
 
+const createVolumeLoader = () => {
+	return new Dataloader(async volumeIds => {
+		return await volumeIds.map(async volumeId => {
+			const { data } = await books.volumes.get({ volumeId });
+			return data;
+		});
+	});
+};
+
 // export new instances of Dataloader in function
 // in order to ensure that each user access his/her
 // own instance, avoiding shared cache among users
@@ -79,5 +88,6 @@ module.exports = req => {
 		notesByGroup: createNotesByGroup(),
 		bookshelf: createBookshelfLoader(),
 		volumes: createVolumesLoader(),
+		volume: createVolumeLoader(),
 	};
 };

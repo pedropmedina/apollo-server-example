@@ -61,8 +61,8 @@ input VolumeInput {
 }
 
 extend type Query {
-	getVolumes(shelfId: Int): [Volume]!
-	getVolume(volumeId: String!): Volume!
+	getVolumes(shelf: Int!): [Volume]!
+	getVolume(id: ID!): Volume!
 	searchVolume(query: String!): [Volume]!
 	recommendedVolumes: [Volume]!
 }
